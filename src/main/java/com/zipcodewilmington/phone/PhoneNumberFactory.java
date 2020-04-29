@@ -3,6 +3,7 @@ package com.zipcodewilmington.phone;
 import com.zipcodewilmington.exceptions.InvalidPhoneNumberFormatException;
 import com.zipcodewilmington.tools.RandomNumberFactory;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -48,12 +49,12 @@ public final class PhoneNumberFactory {
     public static PhoneNumber createPhoneNumberSafely(int areaCode, int centralOfficeCode, int phoneLineCode) {
      String number = "("+areaCode+")"+"-"+centralOfficeCode+"-"+phoneLineCode;
     	try {   
-    		createPhoneNumber(number);
+    		return createPhoneNumber(number);
     }catch(InvalidPhoneNumberFormatException e){
-    	
-    	e.printStackTrace();
-    	}
+    	logger.log(Level.INFO, number + " is not a valid phone number");
     	return null;
+    	}
+    	
     }
 
     /**
@@ -62,13 +63,7 @@ public final class PhoneNumberFactory {
      * @throws InvalidPhoneNumberFormatException - thrown if phoneNumberString does not match acceptable format
      */ // TODO - Add throws statement to method signature
     public static PhoneNumber createPhoneNumber(String phoneNumberString) throws InvalidPhoneNumberFormatException {
-    	
-    	try {
-    		PhoneNumber number = new PhoneNumber(phoneNumberString);
-    	}catch(InvalidPhoneNumberFormatException e) {
-    		e.printStackTrace();
-    	}
-    	
-        return null;
+    	logger.log(Level.INFO,"Attempting to create a new PhoneNumber object with a value of"+ phoneNumberString);	
+        return new PhoneNumber(phoneNumberString);
     }
 }
